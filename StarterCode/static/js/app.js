@@ -1,12 +1,11 @@
 function init() {
+    // Read in data 
     d3.json("samples.json").then(data => {
         console.log("BZ printing data in init function");
         console.log(data);
         console.log(data.samples);
         processSamples(data)
         var dropdown = d3.select("#selDataset");
-        console.log("Printing dropdown");
-        console.log(dropdown);
         data.names.forEach((name)=>{
             dropdown.append("option").text(name).property("value",name);
         })
@@ -15,13 +14,8 @@ function init() {
     });
 }
 
-function display_metadata(meta_value) {
-
-
-}
-
-
 function optionChanged(value_in) {
+    // If option changed, update graphs 
     d3.json("samples.json").then(data => {
         console.log("BZ printing data.samples in optionChanged function");
         console.log(data.samples);
@@ -30,7 +24,6 @@ function optionChanged(value_in) {
         var track_name = [];
         var sample_selected = [];
         var i=0;
-
         var dropdown = d3.select("#selDataset");
         data.names.forEach((name)=>{
             dropdown.append("option").text(name).property("value",name);
@@ -114,15 +107,12 @@ function optionChanged(value_in) {
         bubblely_chart(sample_selected.otu_ids, sample_selected.sample_values, sample_selected.otu_labels)
 
         // Update demographic information in panel 
-        console.log("BZ printing data.metadata in optionChanged function");
-        console.log(data.metadata);
         var display_metadata = data.metadata;
         var metadata= data.metadata;
         var metadata_array= metadata.filter(sampleobject =>
             sampleobject.id == value_in);
         var md_a= metadata_array[0]
         var panel_metadata = d3.select("#sample-metadata");
-
         panel_metadata.html("");
         Object.entries(md_a).forEach(([key, value]) => {
             panel_metadata.append("h6").text(`${key}: ${value}`);
@@ -145,7 +135,7 @@ function processSamples(data) {
 }
 
 function bubblely_chart(b_l, b_v, b_h){
-    // Passing in sample_selected.otu_ids, sample_selected.sample_values, sample_selected.otu_labels
+    // Passing in sample_selected.otu_ids, sample_selected.sample_values, sample_selected.otu_labels to crete buble chart
     // as b_l, b_v, b_h     
 
     var trace1 = {
