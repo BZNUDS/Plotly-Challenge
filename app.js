@@ -162,7 +162,7 @@ function bubblely_chart(b_l, b_v, b_h){
       var data = [trace1];
       
       var layout = {
-        // title: 'Marker Size and Color',
+        title: '',
         showlegend: false,
         height: 600,
         width: 1200
