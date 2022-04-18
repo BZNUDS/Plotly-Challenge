@@ -1,9 +1,10 @@
 function init() {
     // Read in data 
     d3.json("samples.json").then(data => {
-        // console.log("BZ printing data in init function");
-        // console.log(data);
-        // console.log(data.samples);
+        console.log("Printing data in init function");
+        console.log(data);
+        console.log("Printing data.samples in init function");
+        console.log(data.samples);
         processSamples(data)
         var dropdown = d3.select("#selDataset");
         data.names.forEach((name)=>{
@@ -93,8 +94,13 @@ function optionChanged(value_in) {
         }
         };
 
+
         // Render the plot to the div tag with id "plot"
-        // Note that we use `traceData` here, not `data`
+        // Note that we use `traceData2` instead of 'data' since followed the Lesson example where they used use `traceData`, 
+        console.log("Printing traceData2 in optionChanged function");
+        console.log(traceData2);
+        console.log("Printing layout in optionChanged function");
+        console.log(layout);
         Plotly.newPlot("bar", traceData2, layout);
 
         // Update buble chart
@@ -110,6 +116,8 @@ function optionChanged(value_in) {
         panel_metadata.html("");
         Object.entries(md_a).forEach(([key, value]) => {
             panel_metadata.append("h6").text(`${key}: ${value}`);
+            console.log("Printing `${key}: ${value}` in optionChanged function");
+            console.log(`${key}: ${value}`);
         });
     });
 
@@ -131,6 +139,12 @@ function processSamples(data) {
 function bubblely_chart(b_l, b_v, b_h){
     // Passing in sample_selected.otu_ids, sample_selected.sample_values, sample_selected.otu_labels 
     // as b_l, b_v, b_h to crete buble chart
+    console.log("Printing sample_selected.otu_ids (as b_l) in bubblely_chart function");
+    console.log(b_l);
+    console.log("Printing sample_selected.sample_values (as b_v) in bubblely_chart function");
+    console.log(b_v);
+    console.log("Printing hovertext sample_selected.otu_labels (as b_h) in bubblely_chart function");
+    console.log(b_h);
 
     var trace1 = {
         x: b_l,
