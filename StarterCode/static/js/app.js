@@ -74,7 +74,10 @@ function optionChanged(value_in) {
             x: reversedData,
             y: reversedLabels,
             text: bar_hovertext,
-            marker: {color: 'light_blue'},
+            marker: {
+                    // color: 'light_blue'},
+                    color: bar_labels,
+                     },
             type: "bar",
             orientation: "h"
         };
@@ -141,7 +144,7 @@ function bubblely_chart(b_l, b_v, b_h){
             color: b_l,
             // opacity: [1, 0.8, 0.6, 0.4],
             size: b_v,
-            colorscale: 'Jet'  // Closet color scale I could find at https://plotly.com/python/builtin-colorscales/
+            // colorscale: 'Jet'  // Closet color scale I could find at https://plotly.com/python/builtin-colorscales/
         }
       };
       
