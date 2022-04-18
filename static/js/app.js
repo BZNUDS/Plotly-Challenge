@@ -94,7 +94,6 @@ function optionChanged(value_in) {
         }
         };
 
-
         // Render the plot to the div tag with id "plot"
         // Note that we use `traceData2` instead of 'data' since followed the Lesson example where they used use `traceData`, 
         console.log("Printing traceData2 in optionChanged function");
