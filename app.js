@@ -148,10 +148,10 @@ function bubblely_chart(b_l, b_v, b_h){
       var data = [trace1];
       
       var layout = {
-        title: 'Marker Size and Color',
+        // title: 'Marker Size and Color',
         showlegend: false,
         height: 600,
-        width: 1400
+        width: 1200
       };
       // Plot Buble Chart
       Plotly.newPlot('bubble', data, layout);
