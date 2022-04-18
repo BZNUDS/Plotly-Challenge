@@ -1,24 +1,22 @@
 function init() {
     // Read in data 
     d3.json("samples.json").then(data => {
-        console.log("BZ printing data in init function");
-        console.log(data);
-        console.log(data.samples);
+        // console.log("BZ printing data in init function");
+        // console.log(data);
+        // console.log(data.samples);
         processSamples(data)
         var dropdown = d3.select("#selDataset");
         data.names.forEach((name)=>{
             dropdown.append("option").text(name).property("value",name);
         })
-    // Call optionChanged to initalize
+    // Call optionChanged to initalize Dropdown Menu, Bar Graph, and Buble Chart with first data point
     optionChanged('940')
     });
 }
 
 function optionChanged(value_in) {
-    // If option changed, update graphs 
+    // If option is new or changed, load Dropdown Menu, Bar Graph, and Buble Chart with value_inputed
     d3.json("samples.json").then(data => {
-        console.log("BZ printing data.samples in optionChanged function");
-        console.log(data.samples);
         var samples = []
         samples=data.samples
         var track_name = [];
@@ -47,48 +45,44 @@ function optionChanged(value_in) {
             j += 1;
         } while (j < 10);
         
-        console.log("Printing bar_values", bar_values);
-        console.log("Printing bar_labels", bar_labels);
-        console.log("Printing bar_hovertext", bar_hovertext);
-        let sortedByGreekSearch2 = data.samples.sort((a, b) => b.sample_values - a.sample_values);
+        let sortedBySearch2 = data.samples.sort((a, b) => b.sample_values - a.sample_values);
 
         // Slice the first 10 objects for plotting
-        slicedData2 = sortedByGreekSearch2.slice(0, 10);
+        slicedData2 = sortedBySearch2.slice(0, 10);
 
         // Reverse the array to accommodate Plotly's defaults
         reversedData2 = slicedData2.reverse();
+
+        // handle error condition for undefied values (like 945)
         if (bar_labels[8] == undefined) {
-            console.log("*************Error: Undefined value with bar_labels***************************");
+            console.log("*************Error: Undefined value with bar_labels***************************/n");
             console.log(bar_labels);
-            document.write('**********************Terminated due to Undefined value, See web browser inspector for more detail**********************');
+            document.write('********************** Terminated due to Undefined value. Right-click any part of the page and choose Inspect. Then select the Console window area for more detail********************** ');
             return
         }
+
+        // Set-up the required variables for the Bar Chart
         let bar_labels_str = bar_labels.map(convertAsString);
-        // console.log("bar_labels_str:", bar_labels_str)
         reversedData = bar_values.reverse();
+        // The following lines of code were used for a discussion with my Instuctor becasue of the issue I experienced with the Bar Chart. It appears Plotly doesn't like numneric strings. 
         // bar_labels_str = ['944', '2419', '2539', '3450', '1795', '2389', '1314', '922', '1167', '2859'],
         // bar_labels_str = ['OTU_944', 'OTU_2419', 'OTU_2539', 'OTU_3450', 'OTU_1795', 'OTU_2389', 'OTU_1314', 'OTU_922', 'OTU_1167', 'OTU_2859'],
         bar_labels_str1 = bar_labels_str
-        bar_labels_str1=bar_labels_str1.map(obj => `OTU ${obj}`)
+        bar_labels_str1=bar_labels_str1.map(obj => `OTU_${obj}`)
         reversedLabels = bar_labels_str1.reverse();
-
         let trace2 = {
-        x: reversedData,
-        y: reversedLabels,
-        text: bar_hovertext,
-        // name: "Greek",
-        marker: {color: 'light_blue'},
-        type: "bar",
-        orientation: "h"
+            x: reversedData,
+            y: reversedLabels,
+            text: bar_hovertext,
+            marker: {color: 'light_blue'},
+            type: "bar",
+            orientation: "h"
         };
     
         // Data array
-        // `data` has already been defined, so we must choose a new name here:
         let traceData2 = [trace2];
-        console.log("Printing traceData2");
-        console.log(traceData2);
 
-        // Apply a title to the layout
+        // Set-up the layout
         let layout = {
         // title: "Not needed",
         margin: {
@@ -116,18 +110,18 @@ function optionChanged(value_in) {
         panel_metadata.html("");
         Object.entries(md_a).forEach(([key, value]) => {
             panel_metadata.append("h6").text(`${key}: ${value}`);
-            console.log("BZ printing key, value in optionChanged function");
-            console.log(key, value);
         });
     });
 
 }
 
 function convertAsString(val) {
+    // Convert to a string
     return val.toString();
 }
 
 function processSamples(data) {
+    // Process Samples data
     sample_id = data.samples.map(d => d["id"]);
     sample_values = data.samples.map(d => d["sample_values"]);
     otu_ids = data.samples.map(d => d["otu_ids"]);
@@ -135,8 +129,8 @@ function processSamples(data) {
 }
 
 function bubblely_chart(b_l, b_v, b_h){
-    // Passing in sample_selected.otu_ids, sample_selected.sample_values, sample_selected.otu_labels to crete buble chart
-    // as b_l, b_v, b_h     
+    // Passing in sample_selected.otu_ids, sample_selected.sample_values, sample_selected.otu_labels 
+    // as b_l, b_v, b_h to crete buble chart
 
     var trace1 = {
         x: b_l,
@@ -144,10 +138,10 @@ function bubblely_chart(b_l, b_v, b_h){
         text: b_h,
         mode: 'markers',
         marker: {
-        color: b_l,
-        // color: ['rgb(1167, 1167, 1167)', 'rgb(255, 144, 14)',  'rgb(44, 160, 101)', 'rgb(255, 65, 54)'],
-        // opacity: [1, 0.8, 0.6, 0.4],
-        size: b_v
+            color: b_l,
+            // opacity: [1, 0.8, 0.6, 0.4],
+            size: b_v,
+            colorscale: 'Jet'  // Closet color scale I could find at https://plotly.com/python/builtin-colorscales/
         }
       };
       
@@ -159,7 +153,7 @@ function bubblely_chart(b_l, b_v, b_h){
         height: 600,
         width: 1400
       };
-      
+      // Plot Buble Chart
       Plotly.newPlot('bubble', data, layout);
       
 }
