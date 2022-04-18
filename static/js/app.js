@@ -77,7 +77,7 @@ function optionChanged(value_in) {
             text: bar_hovertext,
             marker: {
                 // color: 'light_blue'},
-                color: reversedLabels,
+                color: bar_labels
                  },
             type: "bar",
             orientation: "h"
